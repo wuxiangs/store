@@ -3,6 +3,9 @@ package com.aisiono.store;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author wuxiang
+ */
 @SpringBootApplication
 public class StoreApplication {
 
