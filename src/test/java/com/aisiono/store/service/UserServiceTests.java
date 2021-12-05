@@ -23,11 +23,12 @@ public class UserServiceTests {
     public void reg(){
         try {
             User user=new User();
-            user.setUsername("wuxiang");
+            user.setUsername("lele");
             user.setPassword("123456");
             iUserService.reg(user);
             System.out.println("ok");
         } catch (ServiceException e) {
+            System.out.println(e.getClass().getSimpleName());
             System.out.println(e.getMessage());
 
         }
