@@ -1,11 +1,12 @@
 package com.aisiono.store.controller;
 
-import com.aisiono.store.service.ex.InsertException;
-import com.aisiono.store.service.ex.ServiceException;
-import com.aisiono.store.service.ex.UsernameDuplicatedException;
+import com.aisiono.store.service.ex.*;
 import com.aisiono.store.util.JsonResult;
+import jdk.nashorn.internal.ir.ReturnNode;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author wuxiang
@@ -30,11 +31,36 @@ public class BaseController {
         JsonResult<Void> jsonResult=new JsonResult<>(throwable);
         if (throwable instanceof UsernameDuplicatedException){
             jsonResult.setState(5000);
-            jsonResult.setMessage("用户名被占用");
+            jsonResult.setMessage("用户名被占用异常");
+        }else if (throwable instanceof UsernameNotFoundException){
+            jsonResult.setState(5001);
+            jsonResult.setMessage("用户数据不存在异常");
+        }else if (throwable instanceof PasswordNotMatchException){
+            jsonResult.setState(5002);
+            jsonResult.setMessage("用户密码错误的异常");
         }else if (throwable instanceof InsertException){
             jsonResult.setState(4000);
             jsonResult.setMessage("注册时产生未知的异常");
         }
         return jsonResult;
     }
+
+    /**
+     *获取session对象的uid
+     * @param httpSession session对象
+     * @return 当前登录的用户uid的值
+     */
+    protected final Integer getUidFromSession(HttpSession httpSession){
+        return Integer.valueOf(httpSession.getAttribute("uid").toString());
+    }
+
+    /**
+     * 当前登录用户的username
+     * @param httpSession
+     * @return 当前登录用户的用户名
+     */
+    protected final String getUsernameFromSession(HttpSession httpSession){
+        return httpSession.getAttribute("username").toString();
+    }
+
 }

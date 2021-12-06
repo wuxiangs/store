@@ -4,7 +4,9 @@ import com.aisiono.store.entity.User;
 import com.aisiono.store.mapper.UserMapper;
 import com.aisiono.store.service.IUserService;
 import com.aisiono.store.service.ex.InsertException;
+import com.aisiono.store.service.ex.PasswordNotMatchException;
 import com.aisiono.store.service.ex.UsernameDuplicatedException;
+import com.aisiono.store.service.ex.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -59,6 +61,40 @@ public class UserServiceImpl implements IUserService {
             throw new InsertException("在用户注册的时候产生了未知的异常");
         }
 
+    }
+
+    @Override
+    public User login(String username, String password) {
+        //根据用户名称查询用户的数据是否存在,如果不存在则抛出异常
+        User result = userMapper.findByUsername(username);
+        if (result==null){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+        /**
+         * 检测用户的密码是否匹配
+         *  1.获取到数据库中加密后的密码
+         *  2.和用户传递过来的密码进行比较
+         *    2.1 获取盐值
+         *    2.2 将用户的密码按照相同的MD5算法的规则进行加密
+         */
+        String salt=result.getSalt();
+
+        String newMD5Password=getMD5Password(password,salt);
+
+        if(!newMD5Password.equals(result.getPassword())){
+            throw new PasswordNotMatchException("密码错误");
+        }
+        //判断is_delete字段的字是否为1 为1标记为删除
+        if(result.getIsDelete()==1){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+
+        //需要返回给前端的数据
+        User user=new User();
+        user.setUid(result.getUid());
+        user.setUsername(result.getUsername());
+        user.setAvatar(result.getAvatar());
+        return user;
     }
 
 
