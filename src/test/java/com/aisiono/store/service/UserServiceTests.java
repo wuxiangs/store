@@ -39,4 +39,9 @@ public class UserServiceTests {
         User lele = iUserService.login("lele", "123456");
         System.out.println(lele);
     }
+
+    @Test
+    public void changePassword(){
+        iUserService.changePassword(4,"管理员","123456","654321");
+    }
 }

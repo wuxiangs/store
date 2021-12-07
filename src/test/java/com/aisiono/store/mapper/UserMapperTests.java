@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 /**
  * @author wuxiang
  * @date 2021/12/4 2:39 下午
@@ -36,6 +38,18 @@ public class UserMapperTests {
     public void findByUsername(){
         User tom = userMapper.findByUsername("tom");
         System.out.println(tom);
+    }
+
+
+    @Test
+    public void updatePasswordByUid(){
+        userMapper.updatePasswordByUid(8,"123","管理员",new Date());
+    }
+
+    @Test
+    public void findByUid(){
 
     }
+
+
 }

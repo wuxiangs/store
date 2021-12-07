@@ -38,6 +38,9 @@ public class BaseController {
         }else if (throwable instanceof PasswordNotMatchException){
             jsonResult.setState(5002);
             jsonResult.setMessage("用户密码错误的异常");
+        }else if (throwable instanceof UpdateException){
+            jsonResult.setState(5003);
+            jsonResult.setMessage("更新数据时产生未知异常");
         }else if (throwable instanceof InsertException){
             jsonResult.setState(4000);
             jsonResult.setMessage("注册时产生未知的异常");

@@ -2,6 +2,8 @@ package com.aisiono.store.service;
 
 import com.aisiono.store.entity.User;
 
+import java.util.Date;
+
 /**
  * @author wuxiang
  * @date 2021/12/4 9:23 下午
@@ -23,4 +25,16 @@ public interface IUserService {
      * @return 当前匹配的用户数据
      */
     User login(String username,String password);
+
+
+    /**
+     *
+     *  @param uid 用户id
+     *  @param username 用户名
+     *  @param oldPassword 用户旧密码
+     *  @param newPassword 用户新密码
+     *
+     */
+    void changePassword(Integer uid, String username, String oldPassword,  String newPassword);
+
 }

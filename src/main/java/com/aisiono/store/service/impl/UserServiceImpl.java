@@ -3,10 +3,7 @@ package com.aisiono.store.service.impl;
 import com.aisiono.store.entity.User;
 import com.aisiono.store.mapper.UserMapper;
 import com.aisiono.store.service.IUserService;
-import com.aisiono.store.service.ex.InsertException;
-import com.aisiono.store.service.ex.PasswordNotMatchException;
-import com.aisiono.store.service.ex.UsernameDuplicatedException;
-import com.aisiono.store.service.ex.UsernameNotFoundException;
+import com.aisiono.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -95,6 +92,26 @@ public class UserServiceImpl implements IUserService {
         user.setUsername(result.getUsername());
         user.setAvatar(result.getAvatar());
         return user;
+    }
+
+    @Override
+    public void changePassword(Integer uid, String username, String oldPassword, String newPassword) {
+        User user = userMapper.findByUid(uid);
+        if (user == null || user.getIsDelete()==1){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+        //原始密码和数据库密码进行比对
+        String oldMd5Password = getMD5Password(oldPassword, user.getSalt());
+        if (!user.getPassword().equals(oldMd5Password)){
+            throw new PasswordNotMatchException("密码错误");
+        }
+
+        //将新的密码设置到数据库中
+        String newMd5Password = getMD5Password(newPassword, user.getSalt());
+        Integer update = userMapper.updatePasswordByUid(uid, newMd5Password, username, new Date());
+        if (update!=1){
+            throw new UpdateException("更新数据产生未知的异常");
+        }
     }
 
 
