@@ -22,8 +22,8 @@ public class UserController extends BaseController{
 
     /**
      * 注册功能
-     * @param user
-     * @return
+     * @param user 用户信息
+     * @return 返回信息
      */
     @RequestMapping("/reg")
     public JsonResult<Void> reg(User user){
@@ -34,9 +34,9 @@ public class UserController extends BaseController{
 
     /**
      * 登录功能
-     * @param username
-     * @param password
-     * @return
+     * @param username 用户名
+     * @param password 密码
+     * @return 返回信息
      */
     @RequestMapping("/login")
     public JsonResult<User> login(String username, String password, HttpSession httpSession){
@@ -44,16 +44,16 @@ public class UserController extends BaseController{
         //向session对象中完成数据的绑定（session全局的）
         httpSession.setAttribute("uid",user.getUid());
         httpSession.setAttribute("username",user.getUsername());
-        return new JsonResult<User>(OK,user);
+        return new JsonResult<>(OK,user);
     }
 
 
     /**
      * 修改密码
-     * @param oldPassword
-     * @param newPassword
-     * @param session
-     * @return
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @param session 信息session
+     * @return 返回信息
      */
     @RequestMapping("/change_password")
     public JsonResult<Void> changePassword(String oldPassword,String newPassword,HttpSession session){
@@ -66,26 +66,26 @@ public class UserController extends BaseController{
 
     /**
      * 获取用户信息
-     * @param session
-     * @return
+     * @param session session信息
+     * @return 返回信息
      */
     @RequestMapping("/get_by_uid")
     public JsonResult<User> getByUid(HttpSession session){
         User data = userService.getByUid(getUidFromSession(session));
-        return new JsonResult<User>(OK,data);
+        return new JsonResult<>(OK,data);
     }
 
     /**
      * 更新用户信息
-     * @param user
-     * @param session
-     * @return
+     * @param user 用户信息
+     * @param session session信息
+     * @return 返回信息
      */
     @RequestMapping("/change_info")
     public JsonResult<Void> changeInfo(User user,HttpSession session){
         Integer uid = getUidFromSession(session);
         String username = getUsernameFromSession(session);
         userService.changeInfo(uid,username,user);
-        return new JsonResult<Void>(OK);
+        return new JsonResult<>(OK);
     }
 }

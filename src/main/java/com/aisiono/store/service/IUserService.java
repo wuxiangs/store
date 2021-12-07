@@ -40,17 +40,17 @@ public interface IUserService {
 
     /**
      * 根据uid查询用户
-     * @param uid
-     * @return
+     * @param uid 用户ID
+     * @return 返回用户信息
      */
     User getByUid(Integer uid);
 
 
     /**
      * 更新用户信息
-     * @param uid
-     * @param username
-     * @param user
+     * @param uid 用户ID
+     * @param username 用户名
+     * @param user 用户信息
      */
     void changeInfo(Integer uid,String username,User user);
 

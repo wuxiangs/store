@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,15 +20,17 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
+    /**
+     * 注册功能
+     * @param user 用户注册数据
+     */
     @Override
     public void reg(User user) {
 
-        /**
-         * 注册功能
-         */
+
         //判断用户是否被注册
         User result = userMapper.findByUsername(user.getUsername());
         //判断结果是否不为null则抛出用户名被占用的异常
@@ -67,7 +70,7 @@ public class UserServiceImpl implements IUserService {
      * 登录功能
      * @param username 用户名
      * @param password 密码
-     * @return
+     * @return 返回用户信息
      */
     @Override
     public User login(String username, String password) {
@@ -76,13 +79,11 @@ public class UserServiceImpl implements IUserService {
         if (result==null){
             throw new UsernameNotFoundException("用户数据不存在");
         }
-        /**
-         * 检测用户的密码是否匹配
-         *  1.获取到数据库中加密后的密码
-         *  2.和用户传递过来的密码进行比较
-         *    2.1 获取盐值
-         *    2.2 将用户的密码按照相同的MD5算法的规则进行加密
-         */
+        //检测用户的密码是否匹配
+                  //1.获取到数据库中加密后的密码
+                  //2.和用户传递过来的密码进行比较
+                    //2.1 获取盐值
+                    //2.2 将用户的密码按照相同的MD5算法的规则进行加密
         String salt=result.getSalt();
 
         String newMD5Password=getMD5Password(password,salt);
@@ -132,8 +133,8 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 根据uid查询用户
-     * @param uid
-     * @return
+     * @param uid 用户ID
+     * @return 返回用户信息
      */
     @Override
     public User getByUid(Integer uid) {
@@ -151,9 +152,9 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 更新用户信息
-     * @param uid
-     * @param username
-     * @param user
+     * @param uid 用户ID
+     * @param username 用户名
+     * @param user 用户信息
      */
     @Override
     public void changeInfo(Integer uid, String username, User user) {
@@ -173,9 +174,9 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 定义一个MD5算法加密处理
-     * @param password
-     * @param salt
-     * @return
+     * @param password 密码
+     * @param salt 盐值
+     * @return 返回加密后的密码
      */
     private String getMD5Password(String password,String salt){
         //MD5加密算法(进行三次加密)

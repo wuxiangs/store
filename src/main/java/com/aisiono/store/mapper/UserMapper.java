@@ -21,7 +21,7 @@ public interface UserMapper {
 
     /**
      * 根据用户名查询用户的数据
-     * @param username
+     * @param username 用户名
      * @return 找到返回用户的数据,没有找到返回null值
      */
     User findByUsername(String username);
@@ -32,21 +32,21 @@ public interface UserMapper {
      * @param password 新密码
      * @param modifiedUser 更新人
      * @param modifiedTime 更新时间
-     * @return
+     * @return 返回信息
      */
     Integer updatePasswordByUid(Integer uid, String password, String modifiedUser, Date modifiedTime);
 
     /**
      * 根据uid查询用户
-     * @param uid
-     * @return
+     * @param uid 用户ID
+     * @return 返回信息
      */
     User findByUid(Integer uid);
 
     /**
      * 更新用户的数据信息
-     * @param user
-     * @return
+     * @param user 用户信息
+     * @return 返回信息
      */
     Integer updateInfoByUid(User user);
 }
