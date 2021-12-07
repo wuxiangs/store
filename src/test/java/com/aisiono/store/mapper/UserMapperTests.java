@@ -52,4 +52,17 @@ public class UserMapperTests {
     }
 
 
+    @Test
+    public void updateInfoByUid(){
+        User user=new User();
+        user.setUid(4);
+        user.setPhone("15955429191");
+        user.setEmail("1325668250@qq,com");
+        user.setGender(1);
+        userMapper.updateInfoByUid(user);
+
+    }
+
+
+
 }

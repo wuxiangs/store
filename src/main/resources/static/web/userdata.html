@@ -147,7 +147,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">电话号码：</label>
 								<div class="col-md-8">
-									<input `id="phone" name="phone" type="text" class="form-control" placeholder="请输入电话号码" value="13311311313">
+									<input id="phone" name="phone" type="text" class="form-control" placeholder="请输入电话号码" value="13311311313">
 								</div>
 							</div>
 							<div class="form-group">
@@ -262,6 +262,51 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
+		<script type="text/javascript">
+			<!-- 监听注册按钮是否被点击 -->
+			$("#btn-change-info").click(function () {
+				$.ajax({
+					url:"/users/change_info",
+					type:"POST",
+					data:$("#form-change-info").serialize(),
+					dataType:"JSON",
+					success:function (json){
+						if (json.state == 200){
+							location.href="userdata.html";
+						}else{
+							alert("用户信息修改失败");
+						}
+					},
+					error:function (xhr){
+						alert("修改时产生未知的错误"+xhr.status)
+					}
+				});
+			});
+
+			$(function (){
+				<!--发送ajax()的异步请求获取用户信息-->
+				$.ajax({
+					url:"/users/get_by_uid",
+					type:"GET",
+					data:$("#form-change-info").serialize(),
+					dataType:"JSON",
+					success:function (json){
+						if (json.state == 200){
+							$("#username").val(json.data.username);
+							$("#email").val(json.data.email);
+							$("#phone").val(json.data.phone);
+							let radio=json.data.gender==0?$("#gender-female"):$("#gender-male");
+							radio.prop("checked","checked");
+						}else{
+							alert("用户的数据不存在");
+						}
+					},
+					error:function (xhr){
+						alert("查询时产生未知的错误"+xhr.status)
+					}
+				});
+			})
+		</script>
 	</body>
 
 </html>

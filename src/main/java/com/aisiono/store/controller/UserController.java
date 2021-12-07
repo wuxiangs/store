@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  * @author wuxiang
@@ -49,6 +48,13 @@ public class UserController extends BaseController{
     }
 
 
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @param session
+     * @return
+     */
     @RequestMapping("/change_password")
     public JsonResult<Void> changePassword(String oldPassword,String newPassword,HttpSession session){
         Integer uid = getUidFromSession(session);
@@ -57,4 +63,29 @@ public class UserController extends BaseController{
         return new JsonResult<>(OK);
     }
 
+
+    /**
+     * 获取用户信息
+     * @param session
+     * @return
+     */
+    @RequestMapping("/get_by_uid")
+    public JsonResult<User> getByUid(HttpSession session){
+        User data = userService.getByUid(getUidFromSession(session));
+        return new JsonResult<User>(OK,data);
+    }
+
+    /**
+     * 更新用户信息
+     * @param user
+     * @param session
+     * @return
+     */
+    @RequestMapping("/change_info")
+    public JsonResult<Void> changeInfo(User user,HttpSession session){
+        Integer uid = getUidFromSession(session);
+        String username = getUsernameFromSession(session);
+        userService.changeInfo(uid,username,user);
+        return new JsonResult<Void>(OK);
+    }
 }

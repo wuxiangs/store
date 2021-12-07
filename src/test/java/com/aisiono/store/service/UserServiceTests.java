@@ -1,6 +1,7 @@
 package com.aisiono.store.service;
 
 import com.aisiono.store.entity.User;
+import com.aisiono.store.mapper.UserMapper;
 import com.aisiono.store.service.ex.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,5 +44,19 @@ public class UserServiceTests {
     @Test
     public void changePassword(){
         iUserService.changePassword(4,"管理员","123456","654321");
+    }
+
+    @Test
+    public void getByUid(){
+        System.out.println(iUserService.getByUid(4));
+    }
+
+    @Test
+    public void changeInfo(){
+        User user=new User();
+        user.setPhone("15955429191");
+        user.setEmail("1325668250@qq.com");
+        user.setGender(0);
+        iUserService.changeInfo(4,"管理员",user);
     }
 }

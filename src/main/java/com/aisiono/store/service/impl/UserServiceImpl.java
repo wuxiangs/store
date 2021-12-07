@@ -25,6 +25,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void reg(User user) {
 
+        /**
+         * 注册功能
+         */
         //判断用户是否被注册
         User result = userMapper.findByUsername(user.getUsername());
         //判断结果是否不为null则抛出用户名被占用的异常
@@ -60,6 +63,12 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    /**
+     * 登录功能
+     * @param username 用户名
+     * @param password 密码
+     * @return
+     */
     @Override
     public User login(String username, String password) {
         //根据用户名称查询用户的数据是否存在,如果不存在则抛出异常
@@ -94,6 +103,13 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+    /**
+     * 修改密码
+     * @param uid 用户id
+     * @param username 用户名
+     * @param oldPassword 用户旧密码
+     * @param newPassword 用户新密码
+     */
     @Override
     public void changePassword(Integer uid, String username, String oldPassword, String newPassword) {
         User user = userMapper.findByUid(uid);
@@ -111,6 +127,46 @@ public class UserServiceImpl implements IUserService {
         Integer update = userMapper.updatePasswordByUid(uid, newMd5Password, username, new Date());
         if (update!=1){
             throw new UpdateException("更新数据产生未知的异常");
+        }
+    }
+
+    /**
+     * 根据uid查询用户
+     * @param uid
+     * @return
+     */
+    @Override
+    public User getByUid(Integer uid) {
+        User result = userMapper.findByUid(uid);
+        if (result==null || result.getIsDelete()==1){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+        User user=new User();
+        user.setUsername(result.getUsername());
+        user.setPhone(result.getPhone());
+        user.setEmail(result.getEmail());
+        user.setGender(result.getGender());
+        return user;
+    }
+
+    /**
+     * 更新用户信息
+     * @param uid
+     * @param username
+     * @param user
+     */
+    @Override
+    public void changeInfo(Integer uid, String username, User user) {
+        User result = userMapper.findByUid(uid);
+        if (result==null || result.getIsDelete()==1){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+        user.setUid(uid);
+        user.setModifiedUser(username);
+        user.setModifiedTime(new Date());
+        Integer integer = userMapper.updateInfoByUid(user);
+        if (integer!=1){
+            throw new UpdateException("更新数据是产生未知的异常");
         }
     }
 
