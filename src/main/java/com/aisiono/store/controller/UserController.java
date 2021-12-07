@@ -33,7 +33,6 @@ public class UserController extends BaseController{
         return new JsonResult<>(OK);
     }
 
-
     /**
      * 登录功能
      * @param username
