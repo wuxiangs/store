@@ -154,6 +154,8 @@
 						if (json.state == 200){
 							//跳转到系统的主页,相对路径来确定跳转的页面
 							location.href="index.html";
+							//服务器返回的头像放在cookie中
+							$.cookie("avatar",json.data.avatar,{expires: 7})
 						}else{
 							alert("登录失败");
 						}

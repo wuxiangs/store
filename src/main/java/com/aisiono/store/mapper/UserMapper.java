@@ -2,6 +2,7 @@ package com.aisiono.store.mapper;
 
 import com.aisiono.store.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
@@ -49,4 +50,17 @@ public interface UserMapper {
      * @return 返回信息
      */
     Integer updateInfoByUid(User user);
+
+    /**
+     * @Param("sql映射文件中#{}占位符的变量名")
+     * @param uid 用户ID
+     * @param avatar 头像路径
+     * @param modifiedUser 修改人
+     * @param modifiedTime 修改时间
+     * @return 返回数据
+     */
+    Integer updateAvatarByUid(@Param("uid") Integer uid,
+                              @Param("avatar") String avatar,
+                              @Param("modifiedUser") String modifiedUser,
+                              @Param("modifiedTime") Date modifiedTime);
 }

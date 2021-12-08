@@ -171,6 +171,24 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * 修改用户头像
+     * @param uid 用户ID
+     * @param avatar 头像地址
+     * @param modifiedUser 修改人
+     */
+    @Override
+    public void changeAvatar(Integer uid, String avatar, String modifiedUser) {
+        User result = userMapper.findByUid(uid);
+        if (result==null || result.getIsDelete()==1){
+            throw new UsernameNotFoundException("用户数据不存在");
+        }
+        Integer avatarRows = userMapper.updateAvatarByUid(uid, avatar, modifiedUser, new Date());
+        if (avatarRows!=1){
+            throw new UpdateException("更新用户头像产生未知异常");
+        }
+    }
+
 
     /**
      * 定义一个MD5算法加密处理

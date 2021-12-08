@@ -54,4 +54,11 @@ public interface IUserService {
      */
     void changeInfo(Integer uid,String username,User user);
 
+    /**
+     * 修改用户头像
+     * @param uid 用户ID
+     * @param avatar 头像地址
+     * @param modifiedUser 修改人
+     */
+    void changeAvatar(Integer uid,String avatar,String modifiedUser);
 }

@@ -59,4 +59,10 @@ public class UserServiceTests {
         user.setGender(0);
         iUserService.changeInfo(4,"管理员",user);
     }
+
+
+    @Test
+    public void changeAvatar(){
+        iUserService.changeAvatar(4,"load/avatar.png","专管员");
+    }
 }

@@ -1,5 +1,6 @@
 package com.aisiono.store.controller;
 
+import com.aisiono.store.controller.ex.*;
 import com.aisiono.store.service.ex.*;
 import com.aisiono.store.util.JsonResult;
 import jdk.nashorn.internal.ir.ReturnNode;
@@ -26,7 +27,7 @@ public class BaseController {
      * 请求处理方法,这个方法的返回值就是需要返回给前端的数据
      * 自动将异常对象传递给此方法的参数列表上
      */
-    @ExceptionHandler(ServiceException.class)
+    @ExceptionHandler({ServiceException.class,FileUploadException.class})
     public JsonResult<Void> handlerException(Throwable throwable){
         JsonResult<Void> jsonResult=new JsonResult<>(throwable);
         if (throwable instanceof UsernameDuplicatedException){
@@ -44,6 +45,16 @@ public class BaseController {
         }else if (throwable instanceof InsertException){
             jsonResult.setState(4000);
             jsonResult.setMessage("注册时产生未知的异常");
+        }else if (throwable instanceof FileEmptyException){
+            jsonResult.setState(6000);
+        }else if (throwable instanceof FileTypeException){
+            jsonResult.setState(6001);
+        }else if (throwable instanceof FileSizeException){
+            jsonResult.setState(6002);
+        }else if (throwable instanceof FileStateException){
+            jsonResult.setState(6003);
+        }else if (throwable instanceof FileUploadIoException){
+            jsonResult.setState(6004);
         }
         return jsonResult;
     }
@@ -59,7 +70,7 @@ public class BaseController {
 
     /**
      * 当前登录用户的username
-     * @param httpSession
+     * @param httpSession 用户session数据
      * @return 当前登录用户的用户名
      */
     protected final String getUsernameFromSession(HttpSession httpSession){

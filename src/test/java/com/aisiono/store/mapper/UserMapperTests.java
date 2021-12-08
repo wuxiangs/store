@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ public class UserMapperTests {
     /**
      * idea有检测的功能,接口是不能够直接创建Bean的（动态代理技术来解决）
      */
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Test
@@ -63,6 +64,10 @@ public class UserMapperTests {
 
     }
 
+    @Test
+    public void updateAvatarByUid(){
+        userMapper.updateAvatarByUid(4,"/upload/avatar.png","管理员",new Date());
+    }
 
 
 }
