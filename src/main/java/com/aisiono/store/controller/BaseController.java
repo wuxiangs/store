@@ -3,8 +3,6 @@ package com.aisiono.store.controller;
 import com.aisiono.store.controller.ex.*;
 import com.aisiono.store.service.ex.*;
 import com.aisiono.store.util.JsonResult;
-import jdk.nashorn.internal.ir.ReturnNode;
-import org.apache.ibatis.annotations.Insert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpSession;
@@ -31,19 +29,22 @@ public class BaseController {
     public JsonResult<Void> handlerException(Throwable throwable){
         JsonResult<Void> jsonResult=new JsonResult<>(throwable);
         if (throwable instanceof UsernameDuplicatedException){
-            jsonResult.setState(5000);
+            jsonResult.setState(4000);
             jsonResult.setMessage("用户名被占用异常");
         }else if (throwable instanceof UsernameNotFoundException){
-            jsonResult.setState(5001);
+            jsonResult.setState(4001);
             jsonResult.setMessage("用户数据不存在异常");
         }else if (throwable instanceof PasswordNotMatchException){
-            jsonResult.setState(5002);
+            jsonResult.setState(4002);
             jsonResult.setMessage("用户密码错误的异常");
         }else if (throwable instanceof UpdateException){
-            jsonResult.setState(5003);
+            jsonResult.setState(4003);
             jsonResult.setMessage("更新数据时产生未知异常");
+        }else if (throwable instanceof AddressCountLimitException){
+            jsonResult.setState(4004);
+            jsonResult.setMessage("用户的收获地址超出上限");
         }else if (throwable instanceof InsertException){
-            jsonResult.setState(4000);
+            jsonResult.setState(5000);
             jsonResult.setMessage("注册时产生未知的异常");
         }else if (throwable instanceof FileEmptyException){
             jsonResult.setState(6000);

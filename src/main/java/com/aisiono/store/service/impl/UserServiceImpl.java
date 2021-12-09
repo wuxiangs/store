@@ -4,7 +4,6 @@ import com.aisiono.store.entity.User;
 import com.aisiono.store.mapper.UserMapper;
 import com.aisiono.store.service.IUserService;
 import com.aisiono.store.service.ex.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 

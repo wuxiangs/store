@@ -5,9 +5,6 @@ import com.aisiono.store.entity.User;
 import com.aisiono.store.oss.ConstantProperties;
 import com.aisiono.store.service.IUserService;
 import com.aisiono.store.util.JsonResult;
-import com.aliyun.oss.*;
-import com.aliyun.oss.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +14,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -32,8 +27,6 @@ public class UserController extends BaseController {
     @Resource
     private IUserService userService;
 
-    @Resource
-    private ConstantProperties constantProperties;
 
     /**
      * 注册功能
