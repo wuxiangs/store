@@ -136,20 +136,6 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/change_avatar")
     public JsonResult<String> changeAvatar(HttpSession session, @RequestParam("file") MultipartFile file) {
-        String originalFilename_1 = file.getOriginalFilename();
-        String substring = originalFilename_1.substring(originalFilename_1.lastIndexOf(".")).toLowerCase();
-        Random random = new Random();
-        String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
-        try {
-            InputStream inputStream = file.getInputStream();
-            String s = this.uploadFile2OSS(inputStream, name);
-            System.out.println(s);
-            System.out.println(name);
-        } catch (Exception e) {
-            System.out.println("上传失败");
-        }
-
-
         //判断文件是否为空
         if (file.isEmpty()) {
             throw new FileEmptyException("文件为空");
