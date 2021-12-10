@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aisiono.store.mapper.AddressMapper">
+<mapper namespace="com.aisino.store.mapper.AddressMapper">
 
-    <resultMap id="AddressEntityMap" type="com.aisiono.store.entity.Address">
+    <resultMap id="AddressEntityMap" type="com.aisino.store.entity.Address">
         <id column="aid" property="aid"/>
         <result column="province_code" property="provinceCode"/>
         <result column="province_name" property="provinceName"/>

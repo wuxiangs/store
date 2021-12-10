@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aisiono.store.mapper.UserMapper">
+<mapper namespace="com.aisino.store.mapper.UserMapper">
 
     <!--自定义映射规则:resultMap标签来完成映射规则的定义-->
     <!--
@@ -13,7 +13,7 @@
        column属性:表中的字段名称
        property属性:表示类中的属性名称
     -->
-    <resultMap id="UserEntityMap" type="com.aisiono.store.entity.User">
+    <resultMap id="UserEntityMap" type="com.aisino.store.entity.User">
         <!--将表的字段和类的属性不一致的字段进行匹配指定,名称一致的字段可以省略不写-->
         <!--自定义映射规则时主键是不可忽略的-->
         <id column="uid" property="uid"></id>
