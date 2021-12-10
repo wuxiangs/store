@@ -33,4 +33,14 @@ public class DistrictServiceImpl implements IDistrictService {
         }
         return list;
     }
+
+    /**
+     * 根据代码获取名称
+     * @param code 代码
+     * @return 返回名称
+     */
+    @Override
+    public String getNameByCode(String code) {
+        return districtMapper.findNameByCode(code);
+    }
 }

@@ -1,8 +1,10 @@
 package com.aisino.store.service.impl;
 
 import com.aisino.store.entity.Address;
+import com.aisino.store.entity.User;
 import com.aisino.store.mapper.AddressMapper;
 import com.aisino.store.service.IAddressService;
+import com.aisino.store.service.IDistrictService;
 import com.aisino.store.service.ex.AddressCountLimitException;
 import com.aisino.store.service.ex.InsertException;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,9 @@ public class AddressServiceImpl implements IAddressService {
 
     @Resource
     private AddressMapper addressMapper;
+
+    @Resource
+    private IDistrictService iDistrictService;
 
     @Value("${user.address.max-count}")
     private Integer maxCount;
@@ -46,7 +51,13 @@ public class AddressServiceImpl implements IAddressService {
         address.setCreatedTime(new Date());
         address.setModifiedTime(new Date());
         address.setModifiedUser(username);
-
+        //补全地址的省市区
+        String provinceName = iDistrictService.getNameByCode(address.getProvinceCode());
+        String cityName = iDistrictService.getNameByCode(address.getCityCode());
+        String areaName = iDistrictService.getNameByCode(address.getAreaCode());
+        address.setProvinceName(provinceName);
+        address.setCityName(cityName);
+        address.setAreaName(areaName);
         Integer rows = addressMapper.insert(address);
         if (rows!=1){
             throw new InsertException("插入用户的收货地址出现未知的异常");

@@ -16,4 +16,11 @@ public interface DistrictMapper {
      * @return 返回查询的信息
      */
     List<District> findByParent(String parent);
+
+    /**
+     * 根据编码查询省市区的名称
+     * @param code 编码
+     * @return 返回名称
+     */
+    String findNameByCode(String code);
 }
