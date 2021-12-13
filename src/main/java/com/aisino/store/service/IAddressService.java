@@ -25,4 +25,20 @@ public interface IAddressService {
      * @return 返回收货地址信息
      */
     List<Address> getByUid(Integer uid);
+
+    /**
+     * 设置收货地址为默认
+     * @param uid 用户ID
+     * @param aid 收货地址ID
+     * @param username 用户名
+     */
+    void setDefault(Integer uid,Integer aid,String username);
+
+    /**
+     * 根据aid删除收货地址
+     * @param uid 用户ID
+     * @param aid 地址ID
+     * @param username 用户名
+     */
+    void delete(Integer uid,Integer aid,String username);
 }

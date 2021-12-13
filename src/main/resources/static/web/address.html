@@ -150,33 +150,7 @@
 								</tr>
 							</thead>
 							<tbody id="address-list">
-								<tr>
-									<td>家</td>
-									<td>八戒</td>
-									<td>北京市房山区高老庄3排6号</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
-								<tr>
-									<td>公司</td>
-									<td>八戒</td>
-									<td>北京市海淀区中关村中路1号1001室</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
-								<tr>
-									<td>宿舍</td>
-									<td>八戒</td>
-									<td>北京市海淀区永丰镇30号</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
+
 							</tbody>
 						</table>
 						<a href="addAddress.html" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span>新增收货地址</a>
@@ -269,6 +243,92 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
+	<script type="text/javascript">
+		$(function (){
+			showAddressList();
+		});
+		function showAddressList(){
+			<!--发送ajax()的异步请求获取全部收获地址信息-->
+			$.ajax({
+				url:"/addresses/",
+				type:"GET",
+				dataType:"JSON",
+				success:function (json){
+					if (json.state == 200){
+						let list=json.data;
+						for (let i = 0; i < list.length; i++) {
+							let tr= "<tr>\n" +
+									"\t\t\t\t\t\t\t\t\t<td>#{tag}</td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td>#{name}</td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td>#{address}</td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td>#{phone}</td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td><a href='addAddress.html' class=\"btn btn-xs btn-info\"><span class=\"fa fa-edit\"></span> 修改</a></td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td><a onclick='deleteAddress(#{aid})' class=\"btn btn-xs add-del btn-info\"><span class=\"fa fa-trash-o\"></span> 删除</a></td>\n" +
+									"\t\t\t\t\t\t\t\t\t<td><a onclick='setDefault(#{aids})' class=\"btn btn-xs add-def btn-default\">设为默认</a></td>\n" +
+									"\t\t\t\t\t\t\t\t</tr>";
+							tr=tr.replace("#{tag}",list[i].tag);
+							tr=tr.replace("#{name}",list[i].name);
+							tr=tr.replace("#{address}",list[i].address);
+							tr=tr.replace("#{phone}",list[i].phone);
+							tr=tr.replace("#{aid}",list[i].aid);
+							tr=tr.replace("#{aids}",list[i].aid);
+							$("#address-list").append(tr);
+						}
+						//将某个元素隐藏
+						$(".add-def:eq(0)").hide();
+					}else{
+						alert("获取收货地址失败");
+					}
+				},
+				error:function (xhr){
+					alert("获取收货地址市产生未知的错误"+xhr.status)
+				}
+			});
+		}
+
+		<!--删除收货地址-->
+		function deleteAddress(aid){
+			<!--发送ajax()的异步请求来完成删除收货地址功能-->
+			$.ajax({
+				url:"/addresses/delete/"+aid,
+				type:"POST",
+				dataType:"JSON",
+				success:function (json){
+					if (json.state == 200){
+						//重新加载收获地址列表页面
+						$("#address-list").empty();
+						showAddressList();
+					}else{
+						alert("删除收货地址失败");
+					}
+				},
+				error:function (xhr){
+					alert("删除收货地址产生未知的错误"+xhr.status)
+				}
+			});
+		}
+		<!--设置默认收货地址-->
+		function setDefault(aid){
+				<!--发送ajax()的异步请求来设置默认地址功能-->
+				$.ajax({
+					url:"/addresses/set_default/"+aid,
+					type:"POST",
+					dataType:"JSON",
+					success:function (json){
+						if (json.state == 200){
+							//重新加载收获地址列表页面
+							$("#address-list").empty();
+							showAddressList();
+						}else{
+							alert("设置默认收货地址失败");
+						}
+					},
+					error:function (xhr){
+						alert("设置默认收货地址产生未知的错误"+xhr.status)
+					}
+				});
+		   }
+	</script>
 	</body>
 
 </html>

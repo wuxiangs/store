@@ -31,7 +31,6 @@
                  )
     </insert>
 
-
     <!--查询地址条数 为0的话 is_default 为1 否者为0-->
     <select id="countByUid" resultType="java.lang.Integer">
         select count(*) from t_address where uid=#{uid}
@@ -41,4 +40,31 @@
     <select id="findByUid" resultMap="AddressEntityMap">
         select * from t_address where uid=#{uid} order by is_default desc,created_time desc
     </select>
+
+    <!--根据aid查询收获地址信息-->
+    <select id="findByAid" resultMap="AddressEntityMap">
+        select * from t_address where aid=#{aid}
+    </select>
+
+    <!--根据用户的uid来修改所有的收货地址为非默认-->
+    <update id="updateNonDefault">
+        update t_address set is_default=0 where uid=#{uid}
+    </update>
+
+    <!--根据aid更新收货地址为默认-->
+    <update id="updateDefaultByAid">
+        update t_address set is_default=1,modified_user=#{modifiedUser},modified_time=#{modifiedTime}
+        where aid=#{aid}
+    </update>
+
+    <!--根据aid删除收货地址-->
+    <delete id="deleteByAid">
+        delete from t_address where aid=#{aid}
+    </delete>
+
+    <!--查询出最近修改时间的收货地址-->
+    <select id="findLastModified" resultMap="AddressEntityMap">
+        select * from t_address where uid=#{uid} order by modified_time desc limit 0,1
+    </select>
+
 </mapper>

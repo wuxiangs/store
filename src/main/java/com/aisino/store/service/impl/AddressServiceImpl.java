@@ -5,8 +5,8 @@ import com.aisino.store.entity.User;
 import com.aisino.store.mapper.AddressMapper;
 import com.aisino.store.service.IAddressService;
 import com.aisino.store.service.IDistrictService;
-import com.aisino.store.service.ex.AddressCountLimitException;
-import com.aisino.store.service.ex.InsertException;
+import com.aisino.store.service.ex.*;
+import org.objenesis.instantiator.basic.DelegatingToExoticInstantiator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -73,5 +73,71 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     public List<Address> getByUid(Integer uid) {
         return addressMapper.findByUid(uid);
+    }
+
+    /**
+     * 修改地址为默认
+     * @param uid 用户ID
+     * @param aid 收货地址ID
+     * @param username 用户名
+     */
+    @Override
+    public void setDefault(Integer uid, Integer aid, String username) {
+        Address address = addressMapper.findByAid(aid);
+        if (address == null) {
+            throw new AddressNotFoundException("收货地址不存在");
+        }
+        //检测查询到的地址的归属
+        if (!address.getUid().equals(uid)) {
+            throw new AccessDeniedException("非法数据访问");
+        }
+        //将所有的地址信息设置为非默认
+        Integer rows = addressMapper.updateNonDefault(uid);
+        if (rows<=0){
+            throw new UpdateException("收货地址更新失败");
+        }
+        //更新收货地址为默认
+        Integer row = addressMapper.updateDefaultByAid(aid, username, new Date());
+        if (row!=1){
+            throw new UpdateException("更新数据产生未知的异常");
+        }
+    }
+
+    /**
+     * 根据aid删除收货地址
+     * @param uid 用户ID
+     * @param aid 地址ID
+     * @param username 用户名
+     */
+    @Override
+    public void delete(Integer uid, Integer aid, String username) {
+        Address address = addressMapper.findByAid(aid);
+        if (address == null){
+            throw new AddressNotFoundException("收货地址不存在");
+        }
+        if (!address.getUid().equals(uid)){
+            throw new AccessDeniedException("非法访问数据");
+        }
+       //根据aid删除收货地址
+        Integer row = addressMapper.deleteByAid(aid);
+        if (row!=1){
+            throw new DeleteException("删除收货地址失败");
+        }
+
+        Integer count = addressMapper.countByUid(uid);
+        if (count==0){
+            return;
+        }
+        //删除的地址是默认地址
+        if (address.getIsDefault()==1){
+            Address lastModified = addressMapper.findLastModified(uid);
+            lastModified.setIsDefault(1);
+            Integer rows = addressMapper.updateDefaultByAid(lastModified.getAid(), username, new Date());
+            if (rows!=1){
+                throw new UpdateException("更新数据时产生未知的异常");
+            }
+        }else{
+            return;
+        }
     }
 }

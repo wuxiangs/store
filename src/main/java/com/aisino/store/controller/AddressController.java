@@ -3,11 +3,13 @@ package com.aisino.store.controller;
 import com.aisino.store.entity.Address;
 import com.aisino.store.service.IAddressService;
 import com.aisino.store.util.JsonResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +23,6 @@ public class AddressController extends BaseController{
 
     @Resource
     private IAddressService iAddressService;
-
 
     /**
      * 增加收货地址
@@ -50,4 +51,17 @@ public class AddressController extends BaseController{
     }
 
 
+    @RequestMapping("/set_default/{aid}")
+    public JsonResult<Void> setDefault(@PathVariable("aid") Integer aid,
+                                       HttpSession session){
+        iAddressService.setDefault(getUidFromSession(session),aid,getUsernameFromSession(session));
+        return new JsonResult<>(OK);
+    }
+
+
+    @RequestMapping("/delete/{aid}")
+    public JsonResult<Void> delete(@PathVariable("aid") Integer aid,HttpSession session){
+        iAddressService.delete(getUidFromSession(session),aid,getUsernameFromSession(session));
+        return new JsonResult<>(OK);
+    }
 }

@@ -26,5 +26,16 @@ public class AddressServiceTests {
         address.setPhone("11111111");
         address.setName("mei");
         iAddressService.addNewAddress(address,4,"管理员");
-}
+    }
+
+
+    @Test
+    public void setDefault(){
+        iAddressService.setDefault(4,7,"lele");
+    }
+
+    @Test
+    public void delete(){
+        iAddressService.delete(4,7,"lele");
+    }
 }

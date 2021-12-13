@@ -43,9 +43,18 @@ public class BaseController {
         }else if (throwable instanceof AddressCountLimitException){
             jsonResult.setState(4004);
             jsonResult.setMessage("用户的收获地址超出上限");
+        }else if (throwable instanceof AddressNotFoundException){
+            jsonResult.setState(4005);
+            jsonResult.setMessage("用户的收获地址不存在");
+        }else if (throwable instanceof AccessDeniedException){
+            jsonResult.setState(4006);
+            jsonResult.setMessage("用户的收获地址非法访问");
         }else if (throwable instanceof InsertException){
             jsonResult.setState(5000);
             jsonResult.setMessage("注册时产生未知的异常");
+        }else if (throwable instanceof DeleteException){
+            jsonResult.setState(5001);
+            jsonResult.setMessage("删除时产生未知的异常");
         }else if (throwable instanceof FileEmptyException){
             jsonResult.setState(6000);
         }else if (throwable instanceof FileTypeException){

@@ -1,12 +1,14 @@
 package com.aisino.store.mapper;
 
 import com.aisino.store.entity.Address;
+import com.aisino.store.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +41,34 @@ public class AddressMapperTests {
     public void findByUid(){
         List<Address> list = addressMapper.findByUid(4);
         System.out.println(list);
-
     }
 
+    @Test
+    public void findByAid(){
+        Address address = addressMapper.findByAid(7);
+        System.out.println(address);
+    }
+
+    @Test
+    public void updateNonDefault(){
+        Integer rows = addressMapper.updateNonDefault(4);
+        System.out.println(rows);
+    }
+
+    @Test
+    public void updateDefaultByAid(){
+        addressMapper.updateDefaultByAid(7,"lisi",new Date());
+    }
+
+
+    @Test
+    public void deleteByAid(){
+        Integer row = addressMapper.deleteByAid(8);
+    }
+
+    @Test
+    public void findLastModified(){
+        Address address = addressMapper.findLastModified(4);
+        System.out.println(address);
+    }
 }
