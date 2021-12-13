@@ -2,6 +2,8 @@ package com.aisino.store.service;
 
 import com.aisino.store.entity.Address;
 
+import java.util.List;
+
 /**
  * @author wuxiang
  * @date 2021/12/9 3:09 下午
@@ -16,4 +18,11 @@ public interface IAddressService {
      * @param username 用户名
      */
     void addNewAddress(Address address, Integer uid, String username);
+
+    /**
+     * 根据用户ID查询用户的收货地址
+     * @param uid 用户ID
+     * @return 返回收货地址信息
+     */
+    List<Address> getByUid(Integer uid);
 }

@@ -2,6 +2,8 @@ package com.aisino.store.mapper;
 
 import com.aisino.store.entity.Address;
 
+import java.util.List;
+
 /**
  * @author wuxiang
  * @date 2021/12/9 1:56 下午
@@ -22,4 +24,11 @@ public interface AddressMapper {
      * @return 收获地址数量
      */
     Integer countByUid(Integer uid);
+
+    /**
+     * 根据用户的ID查询用户的信息
+     * @param uid 用户ID
+     * @return 返回用户的收获地址信息
+     */
+    List<Address> findByUid(Integer uid);
 }

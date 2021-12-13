@@ -1,5 +1,6 @@
 package com.aisino.store.mapper;
 
+import com.aisino.store.entity.Address;
 import com.aisino.store.entity.District;
 
 import java.util.List;

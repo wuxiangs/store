@@ -55,6 +55,7 @@
         where uid=#{uid}
     </update>
 
+    <!--更新用户基本信息-->
     <update id="updateInfoByUid">
         update t_user set
                 <if test="phone!=null"> phone=#{phone},</if>
@@ -64,6 +65,7 @@
     </update>
 
 
+    <!--根据用户ID更新头像-->
     <update id="updateAvatarByUid">
         update t_user set avatar=#{avatar},modified_user=#{modifiedUser},modified_time=#{modifiedTime}
         where uid=#{uid}

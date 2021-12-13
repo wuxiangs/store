@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -62,5 +63,15 @@ public class AddressServiceImpl implements IAddressService {
         if (rows!=1){
             throw new InsertException("插入用户的收货地址出现未知的异常");
         }
+    }
+
+    /**
+     * 根据用户ID查询收获地址信息
+     * @param uid 用户ID
+     * @return 返回收货地址信息
+     */
+    @Override
+    public List<Address> getByUid(Integer uid) {
+        return addressMapper.findByUid(uid);
     }
 }

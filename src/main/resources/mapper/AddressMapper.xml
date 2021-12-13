@@ -19,6 +19,7 @@
         <result column="modified_time" property="modifiedTime"/>
     </resultMap>
 
+    <!--增加地址-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="aid">
         INSERT INTO t_address (
             uid, name, province_name, province_code, city_name, city_code, area_name, area_code, zip,
@@ -31,7 +32,13 @@
     </insert>
 
 
+    <!--查询地址条数 为0的话 is_default 为1 否者为0-->
     <select id="countByUid" resultType="java.lang.Integer">
         select count(*) from t_address where uid=#{uid}
+    </select>
+
+    <!--查询用户的所有收货地址信息-->
+    <select id="findByUid" resultMap="AddressEntityMap">
+        select * from t_address where uid=#{uid} order by is_default desc,created_time desc
     </select>
 </mapper>

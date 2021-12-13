@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -34,6 +35,18 @@ public class AddressController extends BaseController{
         String username = getUsernameFromSession(httpSession);
         iAddressService.addNewAddress(address,uid,username);
         return new JsonResult<>(OK);
+    }
+
+
+    /**
+     * 查询用户下的所有收货地址
+     * @param session session信息
+     * @return 返回收货地址
+     */
+    @RequestMapping({"/",""})
+    public JsonResult<List<Address>> getByUid(HttpSession session){
+        List<Address> data = iAddressService.getByUid(getUidFromSession(session));
+        return new JsonResult<>(OK,data);
     }
 
 

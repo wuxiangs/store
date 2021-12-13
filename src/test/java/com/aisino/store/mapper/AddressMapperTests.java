@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -32,6 +33,12 @@ public class AddressMapperTests {
     @Test
     public void countByUid(){
         System.out.println(addressMapper.countByUid(4));
+    }
+
+    @Test
+    public void findByUid(){
+        List<Address> list = addressMapper.findByUid(4);
+        System.out.println(list);
 
     }
 
