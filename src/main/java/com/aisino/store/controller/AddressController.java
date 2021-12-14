@@ -50,7 +50,12 @@ public class AddressController extends BaseController{
         return new JsonResult<>(OK,data);
     }
 
-
+    /**
+     * 设置默认地址
+     * @param aid 地址ID
+     * @param session session数据
+     * @return 返回数据
+     */
     @RequestMapping("/set_default/{aid}")
     public JsonResult<Void> setDefault(@PathVariable("aid") Integer aid,
                                        HttpSession session){
@@ -58,7 +63,12 @@ public class AddressController extends BaseController{
         return new JsonResult<>(OK);
     }
 
-
+    /**
+     * 删除地址
+     * @param aid 地址ID
+     * @param session session数据
+     * @return 返回数据
+     */
     @RequestMapping("/delete/{aid}")
     public JsonResult<Void> delete(@PathVariable("aid") Integer aid,HttpSession session){
         iAddressService.delete(getUidFromSession(session),aid,getUsernameFromSession(session));

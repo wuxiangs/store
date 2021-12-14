@@ -290,6 +290,41 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
+	<script type="text/javascript">
+		$(function(){
+			showHotList();
+		});
+		function showHotList(){
+			$("#hot-list").empty();
+			<!--发送ajax()的异步请求获取热点数据信息-->
+			$.ajax({
+				url:"/product/hot_list",
+				type:"GET",
+				dataType:"JSON",
+				success:function (json){
+					if (json.state == 200){
+						let list=json.data;
+						for (let i = 0; i < list.length; i++) {
+							let tr= '<div class="col-md-12">\n' +
+									'\t\t\t\t\t\t\t\t<div class="col-md-7 text-row-2"><a href="product.html?id=#{id}">#{title}</a></div>\n' +
+									'\t\t\t\t\t\t\t\t<div class="col-md-2">¥#{price}</div>\n' +
+									'\t\t\t\t\t\t\t\t<div class="col-md-3"><img src="..#{image}collect.png" class="img-responsive" /></div>\n' +
+									'\t\t\t\t\t\t\t</div>';
+							tr=tr.replace("#{id}",list[i].id);
+							tr=tr.replace("#{title}",list[i].title);
+							tr=tr.replace("#{price}",list[i].price);
+							tr=tr.replace("#{image}",list[i].image);
+							$("#hot-list").append(tr);
+						}
+					}else{
+						alert("获取热点数据失败");
+					}
+				},
+				error:function (xhr){
+					alert("获取热点数据产生未知的错误"+xhr.status)
+				}
+			});
+		}
+	</script>
 	</body>
-
 </html>
