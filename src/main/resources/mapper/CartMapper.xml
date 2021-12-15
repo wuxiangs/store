@@ -14,7 +14,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="cid">
         insert into t_cart(uid,pid,price,num,created_user,created_time,modified_user,modified_time)
                  values
-                (#{uid},#{pid},#{price},1,#{createdUser},#{createdTime},#{modifiedUser},#{modifiedTime})
+                (#{uid},#{pid},#{price},#{num},#{createdUser},#{createdTime},#{modifiedUser},#{modifiedTime})
     </insert>
 
     <!--更新购物车-->

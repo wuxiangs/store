@@ -32,10 +32,9 @@ public class CartServiceImpl implements ICartService {
      * @param pid 商品ID
      * @param amount 商品数量
      * @param username 用户名
-     * @return
      */
     @Override
-    public Integer AddToCart(Integer uid, Integer pid, Integer amount, String username) {
+    public void AddToCart(Integer uid, Integer pid, Integer amount, String username) {
         //判断当前要添加的购物在表中是否存在
         Cart cart = cartMapper.findByUidAndPid(uid, pid);
         //价格来自商品中的数据
@@ -63,7 +62,6 @@ public class CartServiceImpl implements ICartService {
                 throw new UpdateException("更新数据时发生未知的异常");
             }
         }
-        return null;
     }
 
 }

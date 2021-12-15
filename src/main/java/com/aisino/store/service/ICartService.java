@@ -16,8 +16,7 @@ public interface ICartService {
      * @param pid 商品ID
      * @param amount 商品数量
      * @param username 用户名
-     * @return 影响行数
      */
-    Integer AddToCart(Integer uid,Integer pid,Integer amount,String username);
+    void AddToCart(Integer uid,Integer pid,Integer amount,String username);
 
 }
