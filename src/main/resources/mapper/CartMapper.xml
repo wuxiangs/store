@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aisino.store.mapper.CartMapper">
+    <resultMap id="CartResultMap" type="com.aisino.store.entity.Cart">
+        <id column="cid" property="cid"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="modified_time" property="modifiedTime"/>
+        <result column="modified_user" property="modifiedUser"/>
+    </resultMap>
+    <!--加入购物车-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="cid">
+        insert into t_cart(uid,pid,price,num,created_user,created_time,modified_user,modified_time)
+                 values
+                (#{uid},#{pid},#{price},1,#{createdUser},#{createdTime},#{modifiedUser},#{modifiedTime})
+    </insert>
+
+    <!--更新购物车-->
+    <update id="updateNum">
+        update t_cart set num=#{num},modified_user=#{modifiedUser},modified_time=#{modifiedTime} where
+        cid=#{cid}
+    </update>
+
+    <!--根据用户和商品的ID查询购物车的信息-->
+    <select id="findByUidAndPid" resultMap="CartResultMap">
+        select * from t_cart where uid=#{uid} and pid=#{pid}
+    </select>
+</mapper>
