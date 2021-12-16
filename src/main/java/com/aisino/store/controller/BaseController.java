@@ -52,6 +52,9 @@ public class BaseController {
         }else if (throwable instanceof ProductNotFoundException){
             jsonResult.setState(4007);
             jsonResult.setMessage("访问商品信息出现异常");
+        }else if (throwable instanceof CartNotFoundException){
+            jsonResult.setState(4008);
+            jsonResult.setMessage("购物车数据不存在");
         }else if (throwable instanceof InsertException){
             jsonResult.setState(5000);
             jsonResult.setMessage("注册时产生未知的异常");

@@ -27,4 +27,18 @@
     <select id="findByUidAndPid" resultMap="CartResultMap">
         select * from t_cart where uid=#{uid} and pid=#{pid}
     </select>
+
+    <!--查询购物车信息-->
+    <select id="findVoByUid" resultType="com.aisino.store.vo.CartVo">
+        select cid,uid,pid,t_cart.price,t_cart.num,t_product.title,
+               t_product.image,t_product.price as realPrice
+        from t_cart left join t_product on t_cart.pid=t_product.id where uid=#{uid} order by t_cart.created_time desc
+    </select>
+
+    <!--根据购物车ID查询购物车信息-->
+    <select id="findByCid" resultMap="CartResultMap">
+        select * from t_cart where cid=#{cid}
+    </select>
+
+
 </mapper>

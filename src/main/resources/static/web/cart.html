@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/top.css" />
 		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 		<link rel="stylesheet" type="text/css" href="../css/cart.css" />
-		<script src="../js/cart.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../js/cart.js" type="text/javascript" charset="utf-8"></script>-->
 	</head>
 
 	<body>
@@ -174,7 +174,7 @@
 							</div>
 							<div>
 								<span class="pull-right">
-								<input type="submit" value="  结  算  " class="btn btn-primary btn-lg link-account" />
+								<input type="button" value="  结  算  " class="btn btn-primary btn-lg link-account" />
 							</span>
 							</div>
 						</form>
@@ -268,12 +268,105 @@
 		</footer>
 		<!--页脚结束-->
 		<script type="text/javascript">
-			$(function() {
-				//返回链接
-				$(".link-account").click(function() {
-					location.href = "orderConfirm.html";
-				})
-			})
+			// $(function() {
+			// 	//返回链接
+			// 	$(".link-account").click(function() {
+			// 		location.href = "orderConfirm.html";
+			// 	})
+			// });
+			$(function(){
+				showCartList();
+			});
+			<!--展示购物车信息-->
+			function showCartList(){
+				$("#cart-list").empty();
+				$.ajax({
+					url:"/cart/",
+					type:"GET",
+					dataType:"JSON",
+					success:function(json){
+						let list=json.data;
+						for (let i = 0; i < list.length; i++) {
+							let tr='<tr>\n' +
+									'<td>\n' +
+									'<input name="cids" value="#{cid}" type="checkbox" class="ckitem" />\n' +
+									'</td>\n' +
+									'<td><img src="..#{image}collect.png" class="img-responsive" /></td>\n' +
+									'<td>#{title}#{msg}</td>\n' +
+									'<td>¥<span id="goodsPrice#{cid1}">#{singlePrice}</span></td>\n' +
+									'<td>\n' +
+									'<input id="price-#{cid2}" type="button" value="-" class="num-btn" onclick="reduceNum(#{cids})" />\n' +
+									'<input id="goodsCount#{cid3}" type="text" size="2" readonly="readonly" class="num-text" value="#{num}">\n' +
+									'<input id="price+#{cid4}" class="num-btn" type="button" value="+" onclick="addNum(#{cidss})" />\n' +
+									'</td>\n' +
+									'<td><span id="goodsCast#{cid5}">#{totalPrice}</span></td>\n' +
+									'<td>\n' +
+									'<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
+									'</td>\n' +
+									'</tr>';
+							tr=tr.replace("#{cid}",list[i].cid);
+							tr=tr.replace("#{cid1}",list[i].cid);
+							tr=tr.replace("#{cid2}",list[i].cid);
+							tr=tr.replace("#{cid3}",list[i].cid);
+							tr=tr.replace("#{cid4}",list[i].cid);
+							tr=tr.replace("#{cid5}",list[i].cid);
+							tr=tr.replace("#{cids}",list[i].cid);
+							tr=tr.replace("#{cidss}",list[i].cid);
+							tr=tr.replace("#{image}",list[i].image);
+							tr=tr.replace("#{title}",list[i].title);
+							tr=tr.replace("#{msg}",list[i].realPrice);
+							tr=tr.replace("#{singlePrice}",list[i].price);
+							tr=tr.replace("#{num}",list[i].num);
+							tr=tr.replace("#{totalPrice}",list[i].price * list[i].num);
+							$("#cart-list").append(tr);
+						}
+					},
+					error:function (xhr){
+						alert("获取购物车时发生未知异常"+xhr.status);
+					}
+				});
+			}
+			<!--增加购物车数量-->
+			function addNum(cid){
+				$.ajax({
+					url:"/cart/num/add/"+cid,
+					type:"POST",
+					dataType:"JSON",
+					success:function(json){
+						if (json.state==200){
+							$("#goodsCount"+cid).val(json.data);
+							let price=$("#goodsPrice"+cid).html();
+							$("#goodsCast"+cid).html(price * json.data);
+						}else {
+							alert("增加购物车数据失败");
+						}
+					 },
+					error:function (xhr){
+						alert("增加购物车数量时发生未知异常"+xhr.status);
+					}
+				});
+			}
+
+			<!--减少购物车的数量-->
+			function reduceNum(cid){
+				$.ajax({
+					url:"/cart/num/reduce/"+cid,
+					type:"POST",
+					dataType:"JSON",
+					success:function(json){
+						if (json.state==200){
+							$("#goodsCount"+cid).val(json.data);
+							let price=$("#goodsPrice"+cid).html();
+							$("#goodsCast"+cid).html(price * json.data);
+						}else {
+							alert("增加购物车数据失败");
+						}
+					},
+					error:function (xhr){
+						alert("增加购物车数量时发生未知异常"+xhr.status);
+					}
+				});
+			}
 		</script>
 	</body>
 

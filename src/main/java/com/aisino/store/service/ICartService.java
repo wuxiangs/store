@@ -1,6 +1,9 @@
 package com.aisino.store.service;
 
 import com.aisino.store.entity.Cart;
+import com.aisino.store.vo.CartVo;
+
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -18,5 +21,30 @@ public interface ICartService {
      * @param username 用户名
      */
     void AddToCart(Integer uid,Integer pid,Integer amount,String username);
+
+    /**
+     * 获取购物车信息
+     * @param uid 用户ID
+     * @return 信息返回
+     */
+    List<CartVo> getVoByUid(Integer uid);
+
+    /**
+     * 增加购物车数据的数量
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     * @param username 用户名
+     * @return 返回数据
+     */
+    Integer addNum(Integer cid,Integer uid,String username);
+
+    /**
+     * 减少购物车数据的数量
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     * @param username 用户名
+     * @return 返回数据
+     */
+    Integer reduceNum(Integer cid,Integer uid,String username);
 
 }

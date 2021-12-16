@@ -1,9 +1,10 @@
 package com.aisino.store.mapper;
 
 import com.aisino.store.entity.Cart;
-import org.w3c.dom.stylesheets.LinkStyle;
+import com.aisino.store.vo.CartVo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -36,4 +37,20 @@ public interface CartMapper {
      * @return
      */
     Cart findByUidAndPid(Integer uid,Integer pid);
+
+
+    /**
+     * 根据yid查询购物车信息
+     * @param uid 用户ID
+     * @return 返回信息
+     */
+    List<CartVo> findVoByUid(Integer uid);
+
+    /**
+     * 查询购物车信息
+     * @param cid 购物车ID
+     * @return 返回信息
+     */
+    Cart findByCid(Integer cid);
+
 }

@@ -1,6 +1,7 @@
 package com.aisino.store.mapper;
 
 import com.aisino.store.entity.Cart;
+import com.aisino.store.vo.CartVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -39,6 +41,19 @@ public class CartMapperTests {
     @Test
     public void findByUidAndPid(){
         Cart cart = cartMapper.findByUidAndPid(4, 10000001);
+        System.out.println(cart);
+    }
+
+
+    @Test
+    public void findVoByUid(){
+        List<CartVo> vo = cartMapper.findVoByUid(4);
+        System.out.println(vo);
+    }
+
+    @Test
+    public void findByCid(){
+        Cart cart = cartMapper.findByCid(5);
         System.out.println(cart);
     }
 }

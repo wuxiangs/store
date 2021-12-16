@@ -5,12 +5,17 @@ import com.aisino.store.entity.Product;
 import com.aisino.store.mapper.CartMapper;
 import com.aisino.store.mapper.ProductMapper;
 import com.aisino.store.service.ICartService;
+import com.aisino.store.service.ex.AccessDeniedException;
+import com.aisino.store.service.ex.CartNotFoundException;
 import com.aisino.store.service.ex.InsertException;
 import com.aisino.store.service.ex.UpdateException;
+import com.aisino.store.vo.CartVo;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuxiang
@@ -64,4 +69,61 @@ public class CartServiceImpl implements ICartService {
         }
     }
 
+    /**
+     * 获取购物车信息
+     * @param uid 用户ID
+     * @return 信息返回
+     */
+    @Override
+    public List<CartVo> getVoByUid(Integer uid) {
+        return cartMapper.findVoByUid(uid);
+    }
+
+    /**
+     * 增加购物车商品的数量
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     * @param username 用户名
+     * @return 返回数据
+     */
+    @Override
+    public Integer addNum(Integer cid, Integer uid, String username) {
+        Cart cart = cartMapper.findByCid(cid);
+        if (cart==null){
+            throw new CartNotFoundException("购物车数据不存在");
+        }
+        if (!uid.equals(cart.getUid())){
+            throw new AccessDeniedException("用户非法访问");
+        }
+        Integer num=cart.getNum()+1;
+        Integer row = cartMapper.updateNum(cid,num, username, new Date());
+        if (row!=1){
+            throw new UpdateException("更新购物车失败");
+        }
+        return num;
+    }
+
+    /**
+     * 减少购物车数据
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     * @param username 用户名
+     * @return 返回数据
+     */
+    @Override
+    public Integer reduceNum(Integer cid, Integer uid, String username) {
+        Cart cart = cartMapper.findByCid(cid);
+        if (cart==null){
+            throw new CartNotFoundException("购物车数据不存在");
+        }
+        if (!uid.equals(cart.getUid())){
+            throw new AccessDeniedException("用户非法访问");
+        }
+        Integer num=cart.getNum()-1;
+        Integer row = cartMapper.updateNum(cid,num, username, new Date());
+        if (row!=1){
+            throw new UpdateException("更新购物车失败");
+        }
+        return num;
+    }
 }
