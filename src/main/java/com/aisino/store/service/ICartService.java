@@ -47,4 +47,19 @@ public interface ICartService {
      */
     Integer reduceNum(Integer cid,Integer uid,String username);
 
+    /**
+     * 获取结算的购物车
+     * @param cids 购物车ID的集合
+     * @param uid 用户ID
+     * @return 返回数据
+     */
+    List<CartVo> getVoByCid(Integer[] cids,Integer uid);
+
+    /**
+     * 删除购物车信息
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     */
+    void deleteCartByCid(Integer cid,Integer uid);
+
 }

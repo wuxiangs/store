@@ -129,40 +129,6 @@
 											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
 										</td>
 									</tr>
-									<tr>
-										<td>
-											<input type="checkbox" class="ckitem" />
-										</td>
-										<td><img src="../images/portal/16LenovoYOGA900green/collect.png" class="img-responsive" /></td>
-										<td>戴尔(DELL)XPS13-9360-R1609 13.3</td>
-										<td>¥<span id="goodsPrice2">4988</span></td>
-										<td>
-											<input type="button" value="-" class="num-btn" onclick="reduceNum(2)" />
-											<input id="goodsCount2" type="text" size="2" readonly="readonly" class="num-text" value="1">
-											<input class="num-btn" type="button" value="+" onclick="addNum(2)" />
-										</td>
-										<td><span id="goodsCast2"></span></td>
-										<td>
-											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<input type="checkbox" class="ckitem" />
-										</td>
-										<td><img src="../images/portal/13LenovoIdeaPad310_silvery/collect.png" class="img-responsive" /></td>
-										<td>戴尔(DELL)魔方15MF Pro-R2505TSS灵越</td>
-										<td>¥<span id="goodsPrice3">4699</span></td>
-										<td>
-											<input type="button" value="-" class="num-btn" onclick="reduceNum(3)" />
-											<input id="goodsCount3" type="text" size="2" readonly="readonly" class="num-text" value="1">
-											<input class="num-btn" type="button" value="+" onclick="addNum(3)" />
-										</td>
-										<td><span id="goodsCast3"></span></td>
-										<td>
-											<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />
-										</td>
-									</tr>
 								</tbody>
 							</table>
 							<div class="total-bar">
@@ -174,7 +140,7 @@
 							</div>
 							<div>
 								<span class="pull-right">
-								<input type="button" value="  结  算  " class="btn btn-primary btn-lg link-account" />
+								<input type="submit" value="  结  算  " class="btn btn-primary btn-lg link-account" />
 							</span>
 							</div>
 						</form>
@@ -301,7 +267,7 @@
 									'</td>\n' +
 									'<td><span id="goodsCast#{cid5}">#{totalPrice}</span></td>\n' +
 									'<td>\n' +
-									'<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
+									'<input type="button" onclick="delCartItem(#{cid6})" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
 									'</td>\n' +
 									'</tr>';
 							tr=tr.replace("#{cid}",list[i].cid);
@@ -310,6 +276,7 @@
 							tr=tr.replace("#{cid3}",list[i].cid);
 							tr=tr.replace("#{cid4}",list[i].cid);
 							tr=tr.replace("#{cid5}",list[i].cid);
+							tr=tr.replace("#{cid6}",list[i].cid);
 							tr=tr.replace("#{cids}",list[i].cid);
 							tr=tr.replace("#{cidss}",list[i].cid);
 							tr=tr.replace("#{image}",list[i].image);
@@ -364,6 +331,26 @@
 					},
 					error:function (xhr){
 						alert("增加购物车数量时发生未知异常"+xhr.status);
+					}
+				});
+			}
+
+			<!--删除购物车信息-->
+			function delCartItem(cid){
+				$.ajax({
+					url:"/cart/num/delete/"+cid,
+					type:"POST",
+					dataType:"JSON",
+					success:function(json){
+						if (json.state==200){
+							alert("删除购物车成功");
+							location.href="cart.html";
+						}else {
+							alert("删除购物车失败");
+						}
+					},
+					error:function (xhr){
+						alert("删除购物车时发生未知异常"+xhr.status);
 					}
 				});
 			}

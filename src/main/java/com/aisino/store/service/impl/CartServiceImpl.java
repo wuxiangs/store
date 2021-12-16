@@ -5,16 +5,13 @@ import com.aisino.store.entity.Product;
 import com.aisino.store.mapper.CartMapper;
 import com.aisino.store.mapper.ProductMapper;
 import com.aisino.store.service.ICartService;
-import com.aisino.store.service.ex.AccessDeniedException;
-import com.aisino.store.service.ex.CartNotFoundException;
-import com.aisino.store.service.ex.InsertException;
-import com.aisino.store.service.ex.UpdateException;
+import com.aisino.store.service.ex.*;
 import com.aisino.store.vo.CartVo;
-import com.sun.tools.corba.se.idl.InterfaceGen;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -125,5 +122,37 @@ public class CartServiceImpl implements ICartService {
             throw new UpdateException("更新购物车失败");
         }
         return num;
+    }
+
+    /**
+     * 获取结算购物车数据
+     * @param cids 购物车ID的集合
+     * @param uid 用户ID
+     * @return 返回数据
+     */
+    @Override
+    public List<CartVo> getVoByCid(Integer[] cids, Integer uid) {
+        List<CartVo> list = cartMapper.findVoByCid(cids);
+        Iterator<CartVo> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            CartVo cartVo =  iterator.next();
+            if (!cartVo.getUid().equals(uid)){
+                list.remove(cartVo);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 删除购物车数据
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     */
+    @Override
+    public void deleteCartByCid(Integer cid, Integer uid) {
+        Integer row = cartMapper.deleteCartByCid(cid, uid);
+        if (row!=1){
+            throw new DeleteException("删除购物车数据失败");
+        }
     }
 }

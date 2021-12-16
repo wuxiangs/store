@@ -53,4 +53,19 @@ public interface CartMapper {
      */
     Cart findByCid(Integer cid);
 
+    /**
+     * 根据cid删除购物车信息
+     * @param cid 购物车ID
+     * @param uid 用户ID
+     * @return 改变行数
+     */
+    Integer deleteCartByCid(Integer cid,Integer uid);
+
+
+    /**
+     * 购物车结算的商品
+     * @param cids 商品ID集合
+     * @return 返回数据
+     */
+    List<CartVo> findVoByCid(Integer[] cids);
 }

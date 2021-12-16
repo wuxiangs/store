@@ -40,5 +40,21 @@
         select * from t_cart where cid=#{cid}
     </select>
 
+    <!--删除购物车信息-->
+    <delete id="deleteCartByCid">
+        delete from t_cart where cid=#{cid} and uid=#{uid}
+    </delete>
+
+    <!--根据商品id获取结算的购物车商品-->
+    <select id="findVoByCid" resultType="com.aisino.store.vo.CartVo">
+        select cid,uid,pid,t_cart.price,t_cart.num,t_product.title,
+               t_product.image,t_product.price as realPrice
+        from t_cart left join t_product on t_cart.pid=t_product.id where cid in
+             <foreach collection="array" item="cid" separator="," open="(" close=")">
+                 #{cid}
+             </foreach>
+        order by t_cart.created_time desc
+    </select>
+
 
 </mapper>

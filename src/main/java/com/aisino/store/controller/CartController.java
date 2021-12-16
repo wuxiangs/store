@@ -60,9 +60,38 @@ public class CartController extends BaseController{
         return new JsonResult<>(OK,data);
     }
 
+    /**
+     * 减少购物车数量
+     * @param cid 购物车ID
+     * @param session 用户登录信息
+     * @return 返回数据
+     */
     @RequestMapping("/num/reduce/{cid}")
     public JsonResult<Integer> reduceNum(@PathVariable("cid") Integer cid,HttpSession session){
         Integer data = service.reduceNum(cid, getUidFromSession(session), getUsernameFromSession(session));
+        return new JsonResult<>(OK,data);
+    }
+
+
+    /**
+     * 删除购物车数据
+     * @return 返回状态码
+     */
+    @RequestMapping("/num/delete/{cid}")
+    public JsonResult<Void> deleteCartByCid(@PathVariable("cid") Integer cid,HttpSession session){
+        service.deleteCartByCid(cid,getUidFromSession(session));
+        return new JsonResult<>(OK);
+    }
+
+    /**
+     * 获取结算的购物车数据
+     * @param session 用户信息
+     * @param cids 购物车ID集合
+     * @return 返回数据
+     */
+    @RequestMapping("/list")
+    public JsonResult<List<CartVo>> getVoByCid(HttpSession session,Integer[] cids){
+        List<CartVo> data = service.getVoByCid(cids, getUidFromSession(session));
         return new JsonResult<>(OK,data);
     }
 }
