@@ -249,9 +249,58 @@
 		<!--页脚结束-->
 	<script type="text/javascript">
 		$(function (){
+			<!--展示结算的购物车-->
 			showCartList();
+			<!--展示地址-->
+			showAddressList();
+		});
+		<!--在线支付-->
+		$("#btn-create-order").click(function (){
+			let aid=$("#address-list").val();
+			$.ajax({
+				url:"/orders/create",
+				type:"POST",
+				data:"aid="+aid+"&"+location.search.substr(1),
+				dataType:"JSON",
+				success:function(json){
+					location.href="payment.html";
+					alert("订单创建成功");
+				},
+				error:function (xhr){
+					alert("订单数据加载时发生未知异常"+xhr.status);
+				}
+			});
 		});
 
+		<!--展示地址-->
+		function showAddressList(){
+			$("#address-list").empty();
+			$.ajax({
+				url:"/addresses/",
+				type:"GET",
+				dataType:"JSON",
+				success:function(json){
+					let list=json.data;
+					for (let i = 0; i < list.length; i++) {
+						let option='<option value="#{aid}">#{name}&nbsp;&nbsp;&nbsp;#{tag}&nbsp;&nbsp;&nbsp;#{provinceName}#{cityName}#{areaName}#{address}&nbsp;&nbsp;&nbsp;#{phone}</option>\n';
+						option=option.replace("#{aid}",list[i].aid);
+						option=option.replace("#{name}",list[i].name);
+						option=option.replace("#{tag}",list[i].tag);
+						option=option.replace("#{provinceName}",list[i].provinceName);
+						option=option.replace("#{cityName}",list[i].cityName);
+						option=option.replace("#{areaName}",list[i].areaName);
+						option=option.replace("#{address}",list[i].address);
+						option=option.replace("#{phone}",list[i].phone);
+						$("#address-list").append(option);
+					}
+				},
+				error:function (xhr){
+					alert("购物车对应的收货地址加载时发生未知异常"+xhr.status);
+				}
+			});
+		}
+
+		<!--展示结算的购物车-->
 		function showCartList(){
 			$("#cart-list").empty();
 			$.ajax({

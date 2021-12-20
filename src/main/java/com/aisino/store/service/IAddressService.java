@@ -41,4 +41,12 @@ public interface IAddressService {
      * @param username 用户名
      */
     void delete(Integer uid,Integer aid,String username);
+
+    /**
+     *  根据地址id获取地址
+     * @param aid 地址ID
+     * @param uid 用户ID
+     * @return 返回数据
+     */
+    Address getByAid(Integer aid,Integer uid);
 }
